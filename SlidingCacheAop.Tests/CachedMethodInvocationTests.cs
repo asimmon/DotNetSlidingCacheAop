@@ -2,8 +2,7 @@
 using System.IO;
 using System.Text;
 using Castle.DynamicProxy;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlidingCacheAop.WinApp;
+using Xunit;
 
 namespace SlidingCacheAop.Tests
 {
@@ -18,35 +17,33 @@ namespace SlidingCacheAop.Tests
         }
     }
 
-    [TestClass]
     public class CachedMethodInvocationTests
     {
         private InvocationCatcherInterceptor _interceptor;
         private IDoThings _interceptedObject;
         private string _expectedSignature;
 
-        [TestInitialize]
-        public void SetUp()
+        public CachedMethodInvocationTests()
         {
             CreateInterceptor();
             CreateInterceptedObject();
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCachedMethodInvocationSignatureWithoutArgs()
         {
             _expectedSignature = "SlidingCacheAop.Tests.ClassThatWillBeIntercepted-DoSomethingElse-";
             _interceptedObject.DoSomethingElse();
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCachedMethodInvocationSignatureWithSimpleArgs()
         {
             _expectedSignature = "SlidingCacheAop.Tests.ClassThatWillBeIntercepted-DoSomethingElse-a-1";
             _interceptedObject.DoSomethingElse("a", 1);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCachedMethodInvocationSignatureWithSerializableArg()
         {
             var sb = new StringBuilder("foo");
@@ -55,7 +52,7 @@ namespace SlidingCacheAop.Tests
             _interceptedObject.DoSomethingElse(sb);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCachedMethodInvocationSignatureWithTooComplexArg()
         {
             // the test pass but the logic is biased due to the nature of the complex argument
@@ -77,14 +74,14 @@ namespace SlidingCacheAop.Tests
             var proxyGenerator = new ProxyGenerator();
             _interceptedObject = (IDoThings)proxyGenerator.CreateClassProxy(
                 typeof(ClassThatWillBeIntercepted),
-                new Type[] { typeof(IDoThings) },
+                new[] { typeof(IDoThings) },
                 _interceptor
             );
 
             _interceptor.ActionAgainstInvocation = (invocation) =>
             {
                 var cachedInvocation = new CachedMethodInvocation(invocation);
-                Assert.AreEqual(_expectedSignature, cachedInvocation.Signature);
+                Assert.Equal(_expectedSignature, cachedInvocation.Signature);
             };
         }
     }

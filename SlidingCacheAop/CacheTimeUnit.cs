@@ -1,4 +1,4 @@
-﻿namespace SlidingCacheAop.WinApp
+﻿namespace SlidingCacheAop
 {
 	public enum CacheTimeUnit
 	{

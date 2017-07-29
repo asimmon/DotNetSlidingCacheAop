@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SlidingCacheAop.WinApp
+namespace SlidingCacheAop
 {
     public interface ISlidingCache
     {

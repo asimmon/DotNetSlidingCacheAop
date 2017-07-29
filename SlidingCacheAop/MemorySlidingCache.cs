@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-namespace SlidingCacheAop.WinApp
+namespace SlidingCacheAop
 {
 	public class MemorySlidingCache : ISlidingCache
 	{
-		private readonly Lazy<MemoryCache> DefaultMemoryCacheFactory = new Lazy<MemoryCache>(() =>
+		private readonly Lazy<MemoryCache> _defaultMemoryCacheFactory = new Lazy<MemoryCache>(() =>
 		{
 			var options = Options.Create(new MemoryCacheOptions());
 			return new MemoryCache(options);
@@ -14,7 +14,7 @@ namespace SlidingCacheAop.WinApp
 
 		private MemoryCache DefaultMemoryCache
 		{
-			get { return DefaultMemoryCacheFactory.Value; }
+			get { return _defaultMemoryCacheFactory.Value; }
 		}
 
 		public object Get(string key)

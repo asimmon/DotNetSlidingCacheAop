@@ -1,15 +1,15 @@
 ﻿using System.Collections.Concurrent;
 using Castle.DynamicProxy;
 
-namespace SlidingCacheAop.WinApp
+namespace SlidingCacheAop
 {
     internal class CacheResultHandler
     {
-        private static readonly ConcurrentDictionary<string, object> _lockObjects =
+        private static readonly ConcurrentDictionary<string, object> LockObjects =
             new ConcurrentDictionary<string, object>();
 
-        private CachedMethodInvocation _invocation;
-        private ISlidingCache _cache;
+        private readonly CachedMethodInvocation _invocation;
+        private readonly ISlidingCache _cache;
         private object _currentLockObject;
 
         static CacheResultHandler() { }
@@ -61,7 +61,7 @@ namespace SlidingCacheAop.WinApp
 
         private void GetOrAddDynamicLockObjectBasedOnMethodInvocation()
         {
-            _currentLockObject = _lockObjects.GetOrAdd(_invocation.Signature, idx => new object());
+            _currentLockObject = LockObjects.GetOrAdd(_invocation.Signature, idx => new object());
         }
 
         private void ProceedInvocationWithCache()
@@ -102,7 +102,7 @@ namespace SlidingCacheAop.WinApp
 
         private void ReleaseCurrentLockObject()
         {
-            _lockObjects.TryRemove(_invocation.Signature, out object removedLockObject);
+            LockObjects.TryRemove(_invocation.Signature, out object _);
             _currentLockObject = null;
         }
     }

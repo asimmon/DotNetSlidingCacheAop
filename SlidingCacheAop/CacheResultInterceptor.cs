@@ -1,10 +1,10 @@
 ﻿using Castle.DynamicProxy;
 
-namespace SlidingCacheAop.WinApp
+namespace SlidingCacheAop
 {
     public class CacheResultInterceptor : IInterceptor
     {
-        private ISlidingCache _cache;
+        private readonly ISlidingCache _cache;
 
         public CacheResultInterceptor(ISlidingCache cache)
         {

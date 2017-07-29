@@ -1,5 +1,4 @@
 ﻿using System;
-using SlidingCacheAop.WinApp;
 
 namespace SlidingCacheAop.Tests
 {

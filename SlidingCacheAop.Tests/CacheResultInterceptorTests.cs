@@ -2,53 +2,50 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
-using SlidingCacheAop.WinApp;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace SlidingCacheAop.Tests
 {
-    [TestClass]
     public class CacheResultInterceptorTests
     {
         private CacheResultInterceptor _interceptor;
         private IDoThings _interceptedObject;
 
-        [TestInitialize]
-        public void SetUp()
+        public CacheResultInterceptorTests()
         {
             CreateInterceptor();
             CreateInterceptedObject();
         }
 
-        [TestMethod]
+        [Fact]
         public void CallNonInterceptedMethodTwiceShouldReturnDifferentResults()
         {
             var firstResult = _interceptedObject.DoSomething();
             var secondResult = _interceptedObject.DoSomething();
 
-            Assert.AreNotEqual(firstResult, secondResult);
+            Assert.NotEqual(firstResult, secondResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void CallInterceptedMethodTwiceShouldReturnTheSameResult()
         {
             var firstResult = _interceptedObject.DoSomethingElse();
             var secondResult = _interceptedObject.DoSomethingElse();
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.Equal(firstResult, secondResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void CallInterceptedMethodAgainAfterCacheExpirationShouldReturnDifferentResult()
         {
             var firstResult = _interceptedObject.DoSomethingElse();
             Thread.Sleep(11);
             var secondResult = _interceptedObject.DoSomethingElse();
 
-            Assert.AreNotEqual(firstResult, secondResult);
+            Assert.NotEqual(firstResult, secondResult);
         }
 
-        [TestMethod]
+        [Fact]
         public void CallInterceptedMethodFromMultipleTasksShouldReturnTheSameResult()
         {
             var tasks = CreateTasksOfInterceptedMethods();
@@ -56,16 +53,16 @@ namespace SlidingCacheAop.Tests
             Task.WaitAll(tasks);
 
             for (int i = 1; i < tasks.Length; i++)
-                Assert.AreEqual(tasks[0].Result, tasks[i].Result);
+                Assert.Equal(tasks[0].Result, tasks[i].Result);
         }
 
-        [TestMethod]
+        [Fact]
         public void CallInterceptedMethodWithDifferentArgumentsShouldReturnDifferentResults()
         {
             var firstResult = _interceptedObject.DoSomethingElse("a", 0);
             var secondResult = _interceptedObject.DoSomethingElse("b", 0);
 
-            Assert.AreNotEqual(firstResult, secondResult);
+            Assert.NotEqual(firstResult, secondResult);
         }
 
         private void CreateInterceptor()
@@ -79,14 +76,14 @@ namespace SlidingCacheAop.Tests
             var proxyGenerator = new ProxyGenerator();
             _interceptedObject = (IDoThings)proxyGenerator.CreateClassProxy(
                 typeof(ClassThatWillBeIntercepted),
-                new Type[] { typeof(IDoThings) },
+                new[] { typeof(IDoThings) },
                 _interceptor
             );
         }
 
         private Task<string>[] CreateTasksOfInterceptedMethods()
         {
-            return new Task<string>[]
+            return new[]
             {
                 Task.Run(() => _interceptedObject.DoSomethingElse()),
                 Task.Run(() => _interceptedObject.DoSomethingElse()),

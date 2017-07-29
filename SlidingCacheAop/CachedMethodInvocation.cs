@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 
-namespace SlidingCacheAop.WinApp
+namespace SlidingCacheAop
 {
     public class CachedMethodInvocation
     {
-        private IInvocation _innerInvocation;
+        private readonly IInvocation _innerInvocation;
         private CacheResultAttribute _cacheAttribute;
 
         public object ReturnValue
