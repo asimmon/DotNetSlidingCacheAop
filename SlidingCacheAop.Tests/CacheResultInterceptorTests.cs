@@ -36,17 +36,17 @@ namespace SlidingCacheAop.Tests
             var secondResult = _interceptedObject.DoSomethingElse();
 
             Assert.AreEqual(firstResult, secondResult);
-		}
+        }
 
-		[TestMethod]
-		public void CallInterceptedMethodAgainAfterCacheExpirationShouldReturnDifferentResult()
-		{
-			var firstResult = _interceptedObject.DoSomethingElse();
-			Thread.Sleep(11);
-			var secondResult = _interceptedObject.DoSomethingElse();
+        [TestMethod]
+        public void CallInterceptedMethodAgainAfterCacheExpirationShouldReturnDifferentResult()
+        {
+            var firstResult = _interceptedObject.DoSomethingElse();
+            Thread.Sleep(11);
+            var secondResult = _interceptedObject.DoSomethingElse();
 
-			Assert.AreNotEqual(firstResult, secondResult);
-		}
+            Assert.AreNotEqual(firstResult, secondResult);
+        }
 
         [TestMethod]
         public void CallInterceptedMethodFromMultipleTasksShouldReturnTheSameResult()
@@ -59,11 +59,11 @@ namespace SlidingCacheAop.Tests
                 Assert.AreEqual(tasks[0].Result, tasks[i].Result);
         }
 
-		[TestMethod]
-		public void CallInterceptedMethodWithDifferentArgumentsShouldReturnDifferentResults()
+        [TestMethod]
+        public void CallInterceptedMethodWithDifferentArgumentsShouldReturnDifferentResults()
         {
-			var firstResult = _interceptedObject.DoSomethingElse("a", 0);
-			var secondResult = _interceptedObject.DoSomethingElse("b", 0);
+            var firstResult = _interceptedObject.DoSomethingElse("a", 0);
+            var secondResult = _interceptedObject.DoSomethingElse("b", 0);
 
             Assert.AreNotEqual(firstResult, secondResult);
         }

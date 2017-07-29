@@ -21,27 +21,27 @@ namespace SlidingCacheAop.Tests
         {
             var cacheAttr = new CacheResultAttribute(_duration, CacheTimeUnit.Milliseconds);
             Assert.AreEqual(TimeSpan.FromMilliseconds(_duration), cacheAttr.Duration);
-		}
+        }
 
-		[TestMethod]
-		public void TestCacheAttributeSeconds()
-		{
+        [TestMethod]
+        public void TestCacheAttributeSeconds()
+        {
             var cacheAttr = new CacheResultAttribute(_duration, CacheTimeUnit.Seconds);
             Assert.AreEqual(TimeSpan.FromSeconds(_duration), cacheAttr.Duration);
-		}
+        }
 
-		[TestMethod]
-		public void TestCacheAttributeMinutes()
-		{
+        [TestMethod]
+        public void TestCacheAttributeMinutes()
+        {
             var cacheAttr = new CacheResultAttribute(_duration, CacheTimeUnit.Minutes);
             Assert.AreEqual(TimeSpan.FromMinutes(_duration), cacheAttr.Duration);
-		}
+        }
 
-		[TestMethod]
-		public void TestCacheAttributeHours()
-		{
+        [TestMethod]
+        public void TestCacheAttributeHours()
+        {
             var cacheAttr = new CacheResultAttribute(_duration, CacheTimeUnit.Hours);
             Assert.AreEqual(TimeSpan.FromHours(_duration), cacheAttr.Duration);
-		}
+        }
     }
 }
