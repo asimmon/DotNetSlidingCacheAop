@@ -2,7 +2,7 @@ Sample application that shows how to use an thread-safe aspect to cache the resu
 
 ### How it's done
 
-Castle DynamicProxy provides AOP. You can modify the algorithm to work with Microsoft Unity, I've done it in production.
+Castle DynamicProxy provides AOP. You can modify the algorithm to make it work with Microsoft Unity.
 
 The caching interceptor is meant to be used as a proxy of dependencies resolved with a DI container.
 
